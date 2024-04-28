@@ -1,15 +1,13 @@
 import {isAndroid} from "../utils/AppUtil";
-import OPayHttpResponse, {ResponseStatus} from "../model/OPayHttpResponse"
+import AmanHttpResponse, {ResponseStatus} from "../model/AmanHttpResponse"
 
 
 export default class HttpManager{
-    //尼日和其他地区的域名
-    #ngOrOtherSandBoxHostUrl="https://testapi.opaycheckout.com";
-    #ngOrOtherReleaseHostUrl="https://liveapi.opaycheckout.com";
+    #ngOrOtherSandBoxHostUrl="http://aman-checkout-backend-sandbox.mimocodes.com/api/v1";
+    #ngOrOtherReleaseHostUrl="http://aman-checkout-backend-sandbox.mimocodes.com/api/v1";
 
-    //埃及地区的域名
-    #sandBoxUrl =  "https://sandboxapi.opaycheckout.com";
-    #releaseUrl = "https://api.opaycheckout.com";
+    #sandBoxUrl =  "http://aman-checkout-backend-sandbox.mimocodes.com/api/v1";
+    #releaseUrl = "http://aman-checkout-backend-sandbox.mimocodes.com/api/v1";
 
     #getHostUrl=(isDebug,countryCode)=>{
         if("EG"===countryCode){
@@ -25,10 +23,10 @@ export default class HttpManager{
         let headers={
             "Content-Type":"application/json; utf-8",
             "Authorization":`Bearer ${requestHeader.publicKey}`,
-            "MerchantId": requestHeader.merchantId,
+            "MerchantReference": requestHeader.merchantReference,
             "ClientSource":isAndroid?"AndroidSDK":"IOSSDK",
         }
-        console.log(`请求地址：${url}`)
+        console.log(`URL：${url}`)
         console.log(`headers=${JSON.stringify(headers)}`)
         console.log(`data=${JSON.stringify(data)}`)
         let response = await fetch(url,{
@@ -36,35 +34,35 @@ export default class HttpManager{
             headers:headers,
             body:JSON.stringify(data)
         })
-        let oPayHttpResponse = new OPayHttpResponse()
+        let aManHttpResponse = new AmanHttpResponse()
         if(response.status===200){
             let jsonData = await response.json()
             if(jsonData){
                 if(jsonData.code==='00000'&&jsonData.data){
-                    oPayHttpResponse.status = ResponseStatus.success
-                    oPayHttpResponse.data = jsonData.data
-                    oPayHttpResponse.code = jsonData.code
-                    oPayHttpResponse.message=jsonData.message
+                    aManHttpResponse.status = ResponseStatus.success
+                    aManHttpResponse.data = jsonData.data
+                    aManHttpResponse.code = jsonData.code
+                    aManHttpResponse.message=jsonData.message
                     return oPayHttpResponse
                 }else{
-                    oPayHttpResponse.status = ResponseStatus.error
-                    oPayHttpResponse.data = null
-                    oPayHttpResponse.code = jsonData.code
-                    oPayHttpResponse.message=jsonData.message
-                    return oPayHttpResponse
+                    aManHttpResponse.status = ResponseStatus.error
+                    aManHttpResponse.data = null
+                    aManHttpResponse.code = jsonData.code
+                    aManHttpResponse.message=jsonData.message
+                    return aManHttpResponse
                 }
             } else{
-                oPayHttpResponse.status = ResponseStatus.error
-                oPayHttpResponse.data = null
-                oPayHttpResponse.code = 200
-                oPayHttpResponse.message="Network error"
-                return oPayHttpResponse
+                aManHttpResponse.status = ResponseStatus.error
+                aManHttpResponse.data = null
+                aManHttpResponse.code = 200
+                aManHttpResponse.message="Network error"
+                return aManHttpResponse
             }
         }
-        oPayHttpResponse.status = ResponseStatus.error
-        oPayHttpResponse.data = null
-        oPayHttpResponse.code = response.status
-        oPayHttpResponse.message="Network error"
-        return oPayHttpResponse
+        aManHttpResponse.status = ResponseStatus.error
+        aManHttpResponse.data = null
+        aManHttpResponse.code = response.status
+        aManHttpResponse.message="Network error"
+        return aManHttpResponse
     }
 }

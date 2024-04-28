@@ -1,10 +1,10 @@
-import OPay from './src/pay/Opay'
-import {Country as OPayCountry} from "./src/model/Country";
-import OPayPage from "./src/page/OPayPage";
-import * as OPayWebJsResponse from "./src/model/WebJsResponse"
-import {PayResultStatus as OPayResultStatus} from "./src/model/PayResultStatus"
+import Aman from './src/pay/Opay'
+import {Country as AmanCountry} from "./src/model/Country";
+import AmanPage from "./src/page/AmanPage";
+import * as AmanWebJsResponse from "./src/model/WebJsResponse"
+import {PayResultStatus as AmanResultStatus} from "./src/model/PayResultStatus"
 
 
 export {
-    OPay,OPayCountry,OPayPage,OPayWebJsResponse,OPayResultStatus
+    Aman,AmanCountry,AmanPage,AmanWebJsResponse,AmanResultStatus
 }

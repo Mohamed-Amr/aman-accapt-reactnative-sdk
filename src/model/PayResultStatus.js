@@ -5,4 +5,5 @@ export const PayResultStatus={
     success:"SUCCESS",
     fail:"FAIL",
     close:"CLOSE",
+    expired: "EXPIRED"
 }

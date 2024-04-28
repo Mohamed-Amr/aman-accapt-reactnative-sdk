@@ -12,23 +12,23 @@ import {
     View,
     BackHandler
 } from "react-native";
-import OPay from "../pay/Opay";
-import {ResponseStatus} from "../model/OPayHttpResponse";
+import Aman from "../pay/Aman";
+import {ResponseStatus} from "../model/AmanHttpResponse";
 import { LogBox } from 'react-native';
-import {isAndroid,isIOS} from "opay-online-rn-sdk/src/utils/AppUtil";
+import {isAndroid,isIOS} from "aman-accept-reactnative-sdk/src/utils/AppUtil";
 
 LogBox.ignoreLogs([
     'Non-serializable values were found in the navigation state',
 ]);
 
-export default class OPayPage extends PureComponent{
+export default class AmanPage extends PureComponent{
 
     constructor(props) {
         super(props);
         console.log(JSON.stringify(this.props))
         this.navigation = this.props.navigation
         const params = this.props.route.params;
-        this.payParams = params.payParams;
+        this.paymentParameters = params.paymentParameters;
         this.httpCallback= params.httpCallback;
         this.webPayCallback = params.webPayCallback;
 
@@ -119,14 +119,14 @@ export default class OPayPage extends PureComponent{
     }
 
     #crateOrder=()=>{
-        new OPay().createOrder(this.payParams).then((response)=>{
+        new Aman().createOrder(this.paymentParameters).then((response)=>{
             console.log(`result=${JSON.stringify(response)}`)
-            if(response.status ===ResponseStatus.error){
+            if(response.status === ResponseStatus.error){
                 this.httpCallback && this.httpCallback(response)
                 this.navigation && this.navigation.pop()
             }else{
                 this.httpCallback && this.httpCallback(response)
-                if(response.data.cashierUrl&&response.data.cashierUrl.length>0){
+                if(response.cashierUrl&&response.cashierUrl.length>0){
                     this.setState({
                         url:response.data.cashierUrl
                     })
