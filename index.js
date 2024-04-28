@@ -1,4 +1,4 @@
-import Aman from './src/pay/Opay'
+import Aman from './src/pay/Aman'
 import {Country as AmanCountry} from "./src/model/Country";
 import AmanPage from "./src/page/AmanPage";
 import * as AmanWebJsResponse from "./src/model/WebJsResponse"
